@@ -10,4 +10,10 @@ export default async function handler(request, response) {
     }
     response.status(200).json(places);
   }
+  if (request.method === "POST") {
+    Place.create(request.body);
+    return response
+      .status(200)
+      .json({ success: true, status: "Place created" });
+  }
 }
