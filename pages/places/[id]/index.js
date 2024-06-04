@@ -31,15 +31,24 @@ const StyledLocationLink = styled(StyledLink)`
 
 export default function DetailsPage() {
   const router = useRouter();
-  const { isReady } = router;
+
   const { id } = router.query;
   const { data, isLoading, error } = useSWR(`/api/places/${id}`);
 
   if (isLoading || error) return <h2>Loading...</h2>;
   console.log("id in Details", id);
 
-  function deletePlace() {
-    console.log("deleted?");
+  async function deletePlace(id) {
+    const response = await fetch(`/api/places/${id}`, {
+      method: "DELETE",
+    });
+    console.log("deleted after fetch?");
+    if (response.ok) {
+      await response.json();
+      router.push("/");
+    } else {
+      console.error(`Error: ${response.status}`);
+    }
   }
 
   console.log("data:", data);
@@ -71,7 +80,11 @@ export default function DetailsPage() {
         <Link href={`/places/${id}/edit`} passHref legacyBehavior>
           <StyledLink>Edit</StyledLink>
         </Link>
-        <StyledButton onClick={deletePlace} type="button" variant="delete">
+        <StyledButton
+          onClick={() => deletePlace(id)}
+          type="button"
+          variant="delete"
+        >
           Delete
         </StyledButton>
       </ButtonContainer>
