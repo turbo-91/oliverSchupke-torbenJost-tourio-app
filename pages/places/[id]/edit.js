@@ -11,6 +11,7 @@ export default function EditPage() {
   const { data: place, isLoading, error, mutate } = useSWR(`/api/places/${id}`);
 
   async function editPlace(place) {
+    console.log("place?", place);
     const response = await fetch(`/api/places/${id}`, {
       method: "PUT",
       headers: {
@@ -20,6 +21,7 @@ export default function EditPage() {
     });
     if (response.ok) {
       mutate();
+      router.push(`/places/${id}`);
     }
   }
 
