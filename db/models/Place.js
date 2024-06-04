@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import "./Comment";
 
 const { Schema } = mongoose;
 
@@ -8,10 +9,10 @@ const placeSchema = new Schema({
   image: { type: String, required: true },
   mapURL: { type: String, required: true },
   description: { type: String, required: true },
-  comments: {
-    type: [String],
-    default: [],
-  },
+  comments: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Comment'
+  }]
 });
 
 const Place = mongoose.models.Place || mongoose.model("Place", placeSchema);
