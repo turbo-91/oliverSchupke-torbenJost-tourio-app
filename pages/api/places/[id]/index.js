@@ -17,6 +17,15 @@ export default async function handler(request, response) {
     }
     response.status(200).json(place);
   }
+  if (request.method === "PUT") {
+    const updatedPlace = request.body;
+
+    const placeToUpdate = await Place.findByIdAndUpdate(id, updatedPlace);
+
+    console.log(placeToUpdate);
+
+    response.status(200).json({ status: "Product succesfully updated." });
+  }
   if (request.method === "DELETE") {
     await Place.findByIdAndDelete(id);
 

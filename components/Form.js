@@ -34,9 +34,9 @@ export default function Form({ onSubmit, formName, defaultData }) {
 
   return (
     <FormContainer aria-labelledby={formName} onSubmit={handleSubmit}>
-      <Label htmlFor="name">Name</Label>
+      <Label htmlFor="name-id">Name</Label>
       <Input
-        id="name"
+        id="name-id"
         name="name"
         type="text"
         defaultValue={defaultData?.name}
