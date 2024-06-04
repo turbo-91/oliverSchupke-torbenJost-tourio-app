@@ -23,7 +23,9 @@ const FixedLink = styled(StyledLink)`
   right: 50px;
 `;
 export default function Home() {
-  const { data } = useSWR("/api/places", { fallbackData: [] });
+  const { data, isLoading } = useSWR("/api/places", { fallbackData: [] });
+
+  if (isLoading) return <h2>Loading...</h2>;
   console.log("guckmal:", data);
 
   return (
