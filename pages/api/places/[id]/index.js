@@ -11,7 +11,6 @@ export default async function handler(request, response) {
 
   if (request.method === "GET") {
     const place = await Place.findById(id);
-    console.log("place in pages/api/[]id/index.js", place);
     if (!place) {
       return response.status(404).json({ status: "Not Found" });
     }
@@ -19,10 +18,7 @@ export default async function handler(request, response) {
   }
   if (request.method === "PUT") {
     const updatedPlace = request.body;
-
     const placeToUpdate = await Place.findByIdAndUpdate(id, updatedPlace);
-
-    console.log(placeToUpdate);
 
     response.status(200).json({ status: "Product succesfully updated." });
   }
