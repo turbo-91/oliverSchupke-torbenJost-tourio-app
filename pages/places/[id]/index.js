@@ -33,16 +33,29 @@ export default function DetailsPage() {
   const router = useRouter();
 
   const { id } = router.query;
-  const { data, isLoading, error } = useSWR(`/api/places/${id}`);
+  const { data, isLoading, error, mutate } = useSWR(`/api/places/${id}`);
 
   if (isLoading || error) return <h2>Loading...</h2>;
-  console.log("id in Details", id);
+
+  async function addComment(comment) {
+    const response = await fetch(`/api/places/${id}/comments`, {
+      method: "POST",
+      body: JSON.stringify(comment),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (response.ok) {
+      mutate();
+    } else {
+      console.error(`Error: ${response.status}`);
+    }
+  }
 
   async function deletePlace(id) {
     const response = await fetch(`/api/places/${id}`, {
       method: "DELETE",
     });
-    console.log("deleted after fetch?");
     if (response.ok) {
       await response.json();
       router.push("/");
@@ -50,8 +63,6 @@ export default function DetailsPage() {
       console.error(`Error: ${response.status}`);
     }
   }
-
-  console.log("data:", data);
 
   return (
     <>
@@ -88,7 +99,11 @@ export default function DetailsPage() {
           Delete
         </StyledButton>
       </ButtonContainer>
-      <Comments locationName={data.name} />
+      <Comments
+        onSubmit={addComment}
+        locationName={data.name}
+        comments={data.comments}
+      />
     </>
   );
 }

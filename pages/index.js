@@ -26,7 +26,6 @@ export default function Home() {
   const { data, isLoading } = useSWR("/api/places", { fallbackData: [] });
 
   if (isLoading) return <h2>Loading...</h2>;
-  console.log("guckmal:", data);
 
   return (
     <>
